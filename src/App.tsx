@@ -37,12 +37,12 @@ function App() {
         <h1 className="title">Kartikey Mittal</h1>
         <div className="cooking-text">Something is Cooking...</div>
         <a
-          href="https://instagram.com/kartikey.mittal03"
+          href="https://instagram.com/kartikey.mittal3"
           target="_blank"
           rel="noopener noreferrer"
           className="retro-button"
         >
-          @kartikey.mittal03
+          @kartikey.mittal3
         </a>
       </div>
     </>
