@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
-import Lottie from 'lottie-react'
-import cookingAnimation from './assets/cooking-animation.json'
+
 import './App.css'
 
 function App() {
