@@ -34,7 +34,7 @@ function App() {
         ))}
       </div>
       <div className="content">
-        <h1 className="title">Hey KARTIK!!!</h1>
+        <h1 className="title">Hey KARTIK!!</h1>
         <div className="cooking-text">Something is Cooking...</div>
         <a
           href="https://instagram.com/kartikey.mittal3"
