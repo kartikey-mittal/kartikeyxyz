@@ -1,0 +1,361 @@
+import React, { useState, useEffect } from "react";
+
+export default function App() {
+  const [badgeVisible, setBadgeVisible] = useState(false);
+  const [cookingText, setCookingText] = useState("");
+  const [gridActive, setGridActive] = useState(false);
+
+  const cookingPhrase = " something is cooking ";
+
+  useEffect(() => {
+    // Start grid animation
+    setTimeout(() => {
+      setGridActive(true);
+    }, 300);
+
+    // Start badge animation
+    setTimeout(() => {
+      setBadgeVisible(true);
+    }, 800);
+
+    // Typing animation for text
+    setTimeout(() => {
+      let index = 0;
+      const typeInterval = setInterval(() => {
+        if (index <= cookingPhrase.length) {
+          setCookingText(cookingPhrase.slice(0, index));
+          index++;
+        } else {
+          clearInterval(typeInterval);
+        }
+      }, 80);
+    }, 1200);
+  }, []);
+
+  // Generate responsive grid lines
+  const generateGridLines = () => {
+    const lines = [];
+    const spacing = window.innerWidth <= 768 ? 30 : 40;
+    const width = window.innerWidth || 1200;
+    const height = window.innerHeight || 800;
+
+    // Vertical lines
+    for (let i = 0; i <= width / spacing; i++) {
+      lines.push(
+        <div
+          key={`v-${i}`}
+          className="grid-line vertical"
+          style={{
+            left: `${i * spacing}px`,
+            height: '100%',
+            width: '1px',
+            position: 'absolute',
+            background: 'linear-gradient(180deg, transparent 0%, rgba(255,255,255,0.1) 30%, rgba(255,255,255,0.3) 50%, rgba(255,255,255,0.1) 70%, transparent 100%)',
+            opacity: gridActive ? 0.6 : 0,
+            transition: 'opacity 1s ease-in-out',
+            animation: gridActive ? `gridPulse ${3 + Math.random() * 2}s infinite ease-in-out ${Math.random() * 2}s` : 'none'
+          }}
+        />
+      );
+    }
+
+    // Horizontal lines
+    for (let i = 0; i <= height / spacing; i++) {
+      lines.push(
+        <div
+          key={`h-${i}`}
+          className="grid-line horizontal"
+          style={{
+            top: `${i * spacing}px`,
+            width: '100%',
+            height: '1px',
+            position: 'absolute',
+            background: 'linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.1) 30%, rgba(255,255,255,0.3) 50%, rgba(255,255,255,0.1) 70%, transparent 100%)',
+            opacity: gridActive ? 0.6 : 0,
+            transition: 'opacity 1s ease-in-out',
+            animation: gridActive ? `gridPulse ${3 + Math.random() * 2}s infinite ease-in-out ${Math.random() * 2}s` : 'none'
+          }}
+        />
+      );
+    }
+
+    return lines;
+  };
+
+  // Custom Sparkle Icon Component
+  const SparkleIcon = ({ size = 20, color = "#000000" }) => (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      style={{ display: 'inline-block', verticalAlign: 'middle' }}
+    >
+      <path
+        d="M12 0L14.59 8.41L23 11L14.59 13.59L12 22L9.41 13.59L1 11L9.41 8.41L12 0Z"
+        fill={color}
+      />
+      <path
+        d="M19 4L20.18 6.82L23 8L20.18 9.18L19 12L17.82 9.18L15 8L17.82 6.82L19 4Z"
+        fill={color}
+        opacity="0.7"
+      />
+      <path
+        d="M5 2L5.91 4.09L8 5L5.91 5.91L5 8L4.09 5.91L2 5L4.09 4.09L5 2Z"
+        fill={color}
+        opacity="0.5"
+      />
+    </svg>
+  );
+
+  return (
+    <div
+      style={{
+        minHeight: '100vh',
+        background: 'linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 25%, #2a2a2a 50%, #1a1a1a 75%, #0f0f0f 100%)',
+        position: 'relative',
+        overflow: 'hidden',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        fontFamily: "'Inter', 'Segoe UI', sans-serif"
+      }}
+    >
+      {/* CSS Animations */}
+      <style jsx>{`
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Caveat:wght@400;500;600;700&family=Dancing+Script:wght@400;500;600;700&family=Pacifico&display=swap');
+        
+        @keyframes gridPulse {
+          0%, 100% { 
+            opacity: 0.2; 
+            filter: brightness(0.8);
+          }
+          50% { 
+            opacity: 0.8; 
+            filter: brightness(1.2);
+            box-shadow: 0 0 5px rgba(255,255,255,0.3);
+          }
+        }
+        
+        @keyframes badgeSlideIn {
+          0% { 
+            transform: translateY(50px) scale(0.8); 
+            opacity: 0; 
+          }
+          60% { 
+            transform: translateY(-10px) scale(1.05); 
+          }
+          100% { 
+            transform: translateY(0) scale(1); 
+            opacity: 1; 
+          }
+        }
+        
+        @keyframes badgeGlow {
+          0%, 100% { 
+            box-shadow: 
+              0 0 20px rgba(173, 255, 47, 0.3), 
+              0 0 40px rgba(173, 255, 47, 0.1),
+              0 25px 50px rgba(0, 0, 0, 0.4),
+              0 35px 70px rgba(0, 0, 0, 0.3);
+          }
+          50% { 
+            box-shadow: 
+              0 0 30px rgba(173, 255, 47, 0.5), 
+              0 0 60px rgba(173, 255, 47, 0.2),
+              0 30px 60px rgba(0, 0, 0, 0.5),
+              0 40px 80px rgba(0, 0, 0, 0.4);
+          }
+        }
+        
+        @keyframes typewriter {
+          from { width: 0; }
+          to { width: 100%; }
+        }
+        
+        @keyframes blink {
+          0%, 50% { border-color: transparent; }
+          51%, 100% { border-color: #adff2f; }
+        }
+        
+        @keyframes sparkleRotate {
+          0% { transform: rotate(0deg) scale(1); }
+          50% { transform: rotate(180deg) scale(1.1); }
+          100% { transform: rotate(360deg) scale(1); }
+        }
+        
+        .badge-container {
+          animation: ${badgeVisible ? 'badgeSlideIn 1s ease-out, badgeGlow 3s infinite ease-in-out 1s' : 'none'};
+        }
+        
+        .typing-text {
+          border-right: 2px solid #adff2f;
+          animation: blink 1s infinite;
+          white-space: nowrap;
+          overflow: hidden;
+          display: inline-block;
+          font-family: 'Dancing Script', cursive;
+          font-weight: 600;
+          letter-spacing: 1px;
+          color:#735025;
+        }
+        
+        .sparkle-icon {
+          animation: sparkleRotate 3s infinite ease-in-out;
+          margin: 0 8px;
+        }
+        
+        @media (max-width: 768px) {
+          .badge-container {
+            padding: 16px 20px !important;
+            font-size: 20px !important;
+          }
+          .typing-text {
+            font-size: 25px !important;
+          }
+        }
+        
+        @media (max-width: 480px) {
+          .badge-container {
+            padding: 14px 28px !important;
+            font-size: 16px !important;
+            margin: 0 20px !important;
+          }
+          .typing-text {
+            font-size: 16px !important;
+          }
+        }
+      `}</style>
+
+      {/* Animated Grid Background */}
+      <div 
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          pointerEvents: 'none',
+          zIndex: 1
+        }}
+      >
+        {generateGridLines()}
+      </div>
+
+      {/* Floating Particles */}
+      <div 
+        style={{ 
+          position: 'absolute', 
+          top: 0, 
+          left: 0, 
+          width: '100%', 
+          height: '100%', 
+          pointerEvents: 'none',
+          zIndex: 2
+        }}
+      >
+        {Array.from({ length: 15 }, (_, i) => (
+          <div
+            key={i}
+            style={{
+              position: 'absolute',
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+              width: '3px',
+              height: '3px',
+              background: 'rgba(173, 255, 47, 0.6)',
+              borderRadius: '50%',
+              animation: `gridPulse ${2 + Math.random() * 3}s infinite ${Math.random() * 2}s`,
+              opacity: gridActive ? 1 : 0,
+              transition: 'opacity 1s ease-in-out'
+            }}
+          />
+        ))}
+      </div>
+
+      {/* Main Badge */}
+      <div
+        className="badge-container"
+        style={{
+          background: 'linear-gradient(135deg, #d9b570 0%, #d9b570 50%, #d9b570 100%)',
+          color: '#000000',
+          padding: '24px 48px',
+          borderRadius: '50px',
+          fontSize: '28px',
+          fontWeight: '600',
+          letterSpacing: '0.5px',
+          position: 'relative',
+          zIndex: 10,
+          border: '3px solid #d9b570',
+          backdropFilter: 'blur(10px)',
+          opacity: badgeVisible ? 1 : 0,
+          transform: badgeVisible ? 'translateY(0) scale(1)' : 'translateY(50px) scale(0.8)',
+          transition: 'all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1)',
+          boxShadow: `
+            0 15px 35px rgba(0, 0, 0, 0.4),
+            0 25px 50px rgba(0, 0, 0, 0.3),
+            0 35px 70px rgba(0, 0, 0, 0.2),
+            inset 0 2px 0 rgba(255, 255, 255, 0.3),
+            0 0 0 1px rgba(173, 255, 47, 0.2)
+          `,
+          textShadow: '0 1px 2px rgba(0, 0, 0, 0.2)',
+          cursor: 'default',
+          userSelect: 'none',
+          maxWidth: '90vw',
+          textAlign: 'center',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center'
+        }}
+        onMouseEnter={(e) => {
+          e.target.style.transform = 'translateY(-8px) scale(1.05)';
+          e.target.style.boxShadow = `
+            0 20px 45px rgba(0, 0, 0, 0.5),
+            0 30px 60px rgba(0, 0, 0, 0.4),
+            0 40px 80px rgba(0, 0, 0, 0.3),
+            0 0 50px rgba(173, 255, 47, 0.4),
+            inset 0 2px 0 rgba(255, 255, 255, 0.4),
+            0 0 0 1px rgba(173, 255, 47, 0.3)
+          `;
+        }}
+        onMouseLeave={(e) => {
+          e.target.style.transform = 'translateY(0) scale(1)';
+          e.target.style.boxShadow = `
+            0 15px 35px rgba(0, 0, 0, 0.4),
+            0 25px 50px rgba(0, 0, 0, 0.3),
+            0 35px 70px rgba(0, 0, 0, 0.2),
+            inset 0 2px 0 rgba(255, 255, 255, 0.3),
+            0 0 0 1px rgba(173, 255, 47, 0.2)
+          `;
+        }}
+      >
+        <span className="sparkle-icon">
+          {/* <SparkleIcon size={24} color="#000000" /> */}
+        </span>
+        <span className="typing-text">
+          {cookingText.replace(/✦/g, '')}
+        </span>
+        <span className="sparkle-icon">
+          {/* <SparkleIcon size={24} color="#000000" /> */}
+        </span>
+      </div>
+
+      {/* Subtle Background Gradient Overlay */}
+      <div
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          background: 'radial-gradient(circle at center, transparent 0%, rgba(173, 255, 47, 0.02) 50%, transparent 100%)',
+          pointerEvents: 'none',
+          zIndex: 3,
+          opacity: gridActive ? 1 : 0,
+          transition: 'opacity 2s ease-in-out'
+        }}
+      />
+    </div>
+  );
+}
